@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    driver-class-name: # todo 改为自己的 MySQL 配置
+    url: # todo 改为自己的 MySQL 配置
+    username: # todo 改为自己的 MySQL 配置
+    password: # todo 改为自己的 MySQL 配置

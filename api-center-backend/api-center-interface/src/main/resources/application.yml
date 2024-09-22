@@ -1,0 +1,8 @@
+server:
+    port: 8123
+    servlet:
+      context-path: /api
+apicenter:
+  client:
+    access-key: huaixv06
+    secret-key: 123456
