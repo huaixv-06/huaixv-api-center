@@ -1,15 +1,17 @@
 package com.huaixv06.apicenterclientsdk.client;
 
-import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.lang.UUID;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
 import com.huaixv06.apicenterclientsdk.modal.User;
+import org.springframework.data.redis.core.RedisTemplate;
 
-
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static com.huaixv06.apicenterclientsdk.utils.SignUtils.getSign;
 
@@ -25,6 +27,9 @@ public class ApiCenterClient {
 
     private String accessKey;
     private String secretKey;
+
+    @Resource
+    private RedisTemplate<String,String> redisTemplate;
 
     public ApiCenterClient(String accessKey, String secretKey) {
         this.accessKey = accessKey;
@@ -55,8 +60,12 @@ public class ApiCenterClient {
         Map<String,String> headerMap = new HashMap<>();
         headerMap.put("accessKey",accessKey);
         // 一定不能直接发送
-//        headerMap.put("secretKey",secretKey);
-        headerMap.put("nonce", RandomUtil.randomNumbers(4));
+        // headerMap.put("secretKey",secretKey);
+        // 生成唯一的UUID，作为请求标识之一
+        String nonce = UUID.randomUUID().toString().replace("-", "").toLowerCase();
+        String nonceKey = "apiCenter:headerMap:nonce:" + nonce;
+        redisTemplate.opsForValue().set(nonceKey,nonce,300, TimeUnit.SECONDS);
+        headerMap.put("nonce",nonce);
         headerMap.put("body",body);
         headerMap.put("timestamp",String.valueOf(System.currentTimeMillis()/1000));
         headerMap.put("sign",getSign(body, secretKey));

@@ -3,6 +3,7 @@ package com.huaixv06.apicentergateway;
 import com.huaixv06.apicenterclientsdk.utils.SignUtils;
 import com.huaixv06.apicentercommon.model.entity.InterfaceInfo;
 import com.huaixv06.apicentercommon.model.entity.User;
+import com.huaixv06.apicentercommon.service.InnerHeaderMapService;
 import com.huaixv06.apicentercommon.service.InnerInterfaceInfoService;
 import com.huaixv06.apicentercommon.service.InnerUserInterfaceInfoService;
 import com.huaixv06.apicentercommon.service.InnerUserService;
@@ -43,6 +44,9 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
 
     @DubboReference
     private InnerUserInterfaceInfoService innerUserInterfaceInfoService;
+
+    @DubboReference
+    private InnerHeaderMapService innerHeaderMapService;
 
     private static final List<String> IP_WHITE_LIST = Arrays.asList("127.0.0.1");
 
@@ -90,9 +94,14 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         if (invokeUser == null) {
             return handleInvokeError(response);
         }
-        // todo 使用hashmap或者redis存储 nonce，防止重复调用
-        if (Long.parseLong(Objects.requireNonNull(nonce)) > 10000) {
-            return handleNoAuth(response);
+        // 使用redis存储 nonce，防止重复调用
+//        if (Long.parseLong(Objects.requireNonNull(nonce)) > 10000) {
+//            return handleNoAuth(response);
+//        }
+        // 从Redis中查询nonce是否已存在
+        boolean isSuccess = innerHeaderMapService.checkNonce(nonce);
+        if (!isSuccess) {
+            return handleInvokeError(response);
         }
         // 时间和当前时间不能超过 5 分钟
         long currentTime = System.currentTimeMillis() / 1000;
