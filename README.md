@@ -3,7 +3,7 @@
 
 ## 项目介绍
 
-本项目是基于 React + Spring Boot + Dubbo + Gateway 的 API 接口开放调用平台，管理员可以接入并发布接口，可视化的观察各个接口调用情况；用户可以开通接口调用权限，浏览接口及在线调试，并通过客户端SDK调用接口
+本项目是基于 Spring Boot + Dubbo + Gateway 的 API 接口开放调用平台，管理员可以接入并发布接口，可视化的观察各个接口调用情况；用户可以开通接口调用权限，浏览接口及在线调试，并通过客户端SDK调用接口
 
 ### 技术栈
 
@@ -26,3 +26,6 @@ GateWay：作为API网关，集中接受客户端的请求，并执行统一的�
  * api-center-interface：提供模拟API接口
 
 交互流程：首先管理员创建接口后通过核心业务后端 (api-center-backend) 保存到数据库中，用户在需要调用某个接口时，可以先通过客户端的在线调试功能体验，然后在自己的项目中引入客户端 SDK (api-center-client-sdk) 并通过一行代码发起调用，请求会先发送到 API 网关 (api-center-gateway) 进行用户的鉴权和接口调用统计，然后将请求转发到实际的 API 接口 (api-center-interface) 。
+
+![Pasted image 20240831115159](https://github.com/user-attachments/assets/4b0ffb91-8602-4219-bc89-405d6860c04f)
+
