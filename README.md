@@ -35,6 +35,8 @@ GateWay：作为API网关，集中接受客户端的请求，并执行统一的�
 
 ![image](https://github.com/user-attachments/assets/197f1f70-a2d3-4704-82ac-f297194d7ad4)
 
+![image](https://github.com/user-attachments/assets/b56debf6-8b89-47d0-bf59-d249d8abc6c5)
+
 ![image](https://github.com/user-attachments/assets/475f30b5-8ccc-4c32-85a5-21db8a742c5f)
 
 ![image](https://github.com/user-attachments/assets/45c337b2-4d96-4b4d-958a-16cced7d2ca2)
